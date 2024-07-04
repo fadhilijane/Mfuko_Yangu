@@ -24,6 +24,10 @@ def load_user(user_id):
 def home():
     return render_template('landing.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -43,7 +47,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == ['POST']:
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
@@ -120,5 +124,5 @@ def request_money():
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app.run(debug=True, host="0.0.0.0")
+    
