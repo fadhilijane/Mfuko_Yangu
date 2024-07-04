@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_migrate import Migrate
+from datetime import datetime
 from models import db, bcrypt, User, Transaction
 
 app = Flask(__name__)
@@ -67,15 +68,20 @@ def logout():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    return render_template('dashboard.html', balance=current_user.balance)
+
+@app.route('/transactions')
+@login_required
+def transactions():
     transactions = Transaction.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', transactions=transactions, balance=current_user.balance)
+    return render_template('transactions.html', transactions=transactions)
 
 @app.route('/deposit', methods=['POST'])
 @login_required
 def deposit():
     amount = float(request.form['amount'])
     current_user.balance += amount
-    transaction = Transaction(user_id=current_user.id, amount=amount, type='deposit')
+    transaction = Transaction(user_id=current_user.id, amount=amount, type='deposit', date=datetime.utcnow())
     db.session.add(transaction)
     db.session.commit()
     flash('Deposit successful!', 'success')
@@ -87,7 +93,7 @@ def withdraw():
     amount = float(request.form['amount'])
     if current_user.balance >= amount:
         current_user.balance -= amount
-        transaction = Transaction(user_id=current_user.id, amount=amount, type='withdrawal')
+        transaction = Transaction(user_id=current_user.id, amount=amount, type='withdrawal', date=datetime.utcnow())
         db.session.add(transaction)
         db.session.commit()
         flash('Withdrawal successful!', 'success')
@@ -104,7 +110,7 @@ def transfer():
     if recipient and current_user.balance >= amount:
         current_user.balance -= amount
         recipient.balance += amount
-        transaction = Transaction(user_id=current_user.id, amount=amount, type='transfer', recipient_id=recipient.id)
+        transaction = Transaction(user_id=current_user.id, amount=amount, type='transfer', recipient_id=recipient.id, date=datetime.utcnow())
         db.session.add(transaction)
         db.session.commit()
         flash('Transfer successful!', 'success')
@@ -117,12 +123,14 @@ def transfer():
 def request_money():
     amount = float(request.form['amount'])
     message = request.form['message']
-    transaction = Transaction(user_id=current_user.id, amount=amount, type='request', recipient_id=None, message=message)
+    transaction = Transaction(user_id=current_user.id, amount=amount, type='request', recipient_id=None, message=message, date=datetime.utcnow())
     db.session.add(transaction)
     db.session.commit()
     flash('Money request sent!', 'success')
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, host="0.0.0.0")
-    
+

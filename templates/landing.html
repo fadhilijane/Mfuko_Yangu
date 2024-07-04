@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to Personal Banking</title>
+    <title>Welcome to Mfuko Yangu</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to Personal Banking</h1>
-    <p>Your one-stop solution for managing your personal finances. Register or log in to get started.</p>
-    <div class="landing-buttons">
-        <a href="{{ url_for('register') }}" class="button">Register</a>
-        <a href="{{ url_for('login') }}" class="button">Login</a>
+    <div class="container">
+        <h1>Welcome to Mfuko Yangu</h1>
+        <p>Your one-stop solution for managing your personal finances. Register or log in to get started.</p>
+        <div class="landing-buttons">
+            <a href="{{ url_for('register') }}" class="button">Register</a>
+            <a href="{{ url_for('login') }}" class="button">Login</a>
+        </div>
     </div>
 </body>
 </html>

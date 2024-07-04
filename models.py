@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin
@@ -36,4 +35,5 @@ class Transaction(db.Model):
     type = db.Column(db.String(50), nullable=False)  # 'deposit', 'withdrawal', 'transfer', 'request'
     recipient_id = db.Column(db.Integer, nullable=True)  # For peer-to-peer payments
     message = db.Column(db.String(255), nullable=True)  # For money requests
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
