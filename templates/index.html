@@ -2,41 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mfuko Yangu</title>
+    <title>Personal Banking</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Personal Banking</h1>
-    <form action="{{ url_for('add_user') }}" method="post">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="number" step="0.01" name="balance" placeholder="Balance" required>
-        <button type="submit">Add User</button>
+    <form action="{{ url_for('deposit') }}" method="post">
+        <input type="number" step="0.01" name="amount" placeholder="Deposit Amount" required>
+        <button type="submit">Deposit</button>
     </form>
-    <h2>Users</h2>
+    <form action="{{ url_for('transfer') }}" method="post">
+        <input type="text" name="recipient" placeholder="Recipient Username" required>
+        <input type="number" step="0.01" name="amount" placeholder="Transfer Amount" required>
+        <button type="submit">Transfer</button>
+    </form>
+    <h2>Current Balance: ${{ current_user.balance }}</h2>
+    <h2>Transaction History</h2>
     <table>
         <tr>
-            <th>Name</th>
-            <th>Balance</th>
-            <th>Update Balance</th>
-            <th>Delete</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Recipient</th>
         </tr>
-        {% for user in users %}
+        {% for transaction in transactions %}
         <tr>
-            <td>{{ user[1] }}</td>
-            <td>{{ user[2] }}</td>
-            <td>
-                <form action="{{ url_for('update_balance', user_id=user[0]) }}" method="post">
-                    <input type="number" step="0.01" name="balance" placeholder="New Balance" required>
-                    <button type="submit">Update</button>
-                </form>
-            </td>
-            <td>
-                <form action="{{ url_for('delete_user', user_id=user[0]) }}" method="post">
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
+            <td>{{ transaction.type }}</td>
+            <td>{{ transaction.amount }}</td>
+            <td>{{ transaction.recipient_id }}</td>
         </tr>
         {% endfor %}
     </table>
+    <form action="{{ url_for('logout') }}" method="get">
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>
+
