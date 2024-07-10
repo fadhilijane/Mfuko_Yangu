@@ -17,6 +17,27 @@
             {% for transaction in transactions %}
             <tr>
                 <td>{{ transaction.id }}</td>
+### templates/transactions.html
+```html
+{% extends "base.html" %}
+{% block content %}
+<div class="transaction-container">
+    <h2>Transaction History</h2>
+    <table class="transaction-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Recipient</th>
+                <th>Message</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
                 <td>{{ transaction.type }}</td>
                 <td>${{ transaction.amount }}</td>
                 <td>{% if transaction.recipient_id %}{{ transaction.recipient_id }}{% else %}N/A{% endif %}</td>
@@ -28,4 +49,3 @@
     </table>
 </div>
 {% endblock %}
-

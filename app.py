@@ -5,10 +5,12 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from flask_migrate import Migrate
 from models import db, bcrypt, User, Transaction
 
+# Initialize Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
+# Initialize extensions
 db.init_app(app)
 bcrypt.init_app(app)
 migrate = Migrate(app, db)
@@ -16,12 +18,14 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+# User loader callback for Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
 @app.route('/')
 def home():
+    # Redirect to the landing page
     return redirect("https://mfukoyangubanking.pages.dev/#")
 
 @app.route('/about')
