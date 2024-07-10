@@ -110,16 +110,26 @@ def transfer():
     recipient_username = request.form['recipient']
     amount = float(request.form['amount'])
     recipient = User.query.filter_by(username=recipient_username).first()
-    if recipient and current_user.balance >= amount:
-        current_user.balance -= amount
-        recipient.balance += amount
-        transaction = Transaction(user_id=current_user.id, amount=amount, type='transfer', recipient_id=recipient.id)
-        db.session.add(transaction)
-        db.session.commit()
-        flash('Transfer successful!', 'success')
-    else:
-        flash('Transfer failed. Check recipient username and your balance.', 'danger')
+
+    # Check if recipient exists
+    if not recipient:
+        flash('Transfer failed. Recipient username does not exist.', 'danger')
+        return redirect(url_for('dashboard'))
+
+    # Check if current user has sufficient balance
+    if current_user.balance < amount:
+        flash('Transfer failed. Insufficient balance.', 'danger')
+        return redirect(url_for('dashboard'))
+
+    # Perform transfer
+    current_user.balance -= amount
+    recipient.balance += amount
+    transaction = Transaction(user_id=current_user.id, amount=amount, type='transfer', recipient_id=recipient.id)
+    db.session.add(transaction)
+    db.session.commit()
+    flash('Transfer successful!', 'success')
     return redirect(url_for('dashboard'))
+
 
 @app.route('/request_money', methods=['POST'])
 @login_required
