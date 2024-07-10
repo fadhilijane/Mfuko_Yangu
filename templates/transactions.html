@@ -1,40 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Transaction History</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Transaction History</h1>
-        <div class="table-container">
-            <table>
-                <tr>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Recipient</th>
-                    <th>Date</th>
-                </tr>
-                {% for transaction in transactions %}
-                <tr>
-                    <td>{{ transaction.type }}</td>
-                    <td>${{ transaction.amount }}</td>
-                    <td>
-                        {% if transaction.recipient_id %}
-                            {% set recipient = User.query.get(transaction.recipient_id) %}
-                            {{ recipient.username }}
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </td>
-                    <td>{{ transaction.date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <a href="{{ url_for('dashboard') }}" class="button">Back to Dashboard</a>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="transaction-container">
+    <h2>Transaction History</h2>
+    <table class="transaction-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Recipient</th>
+                <th>Message</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.type }}</td>
+                <td>${{ transaction.amount }}</td>
+                <td>{% if transaction.recipient_id %}{{ transaction.recipient_id }}{% else %}N/A{% endif %}</td>
+                <td>{% if transaction.message %}{{ transaction.message }}{% else %}N/A{% endif %}</td>
+                <td>{{ transaction.date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
 

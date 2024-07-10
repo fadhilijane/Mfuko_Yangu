@@ -1,8 +1,8 @@
-"""Add message column to Transaction
+"""Initial migration
 
-Revision ID: 79b53d4cffb5
+Revision ID: 35033987f75c
 Revises: 
-Create Date: 2024-07-04 11:20:02.957524
+Create Date: 2024-07-10 07:50:00.881680
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '79b53d4cffb5'
+revision = '35033987f75c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -33,6 +33,7 @@ def upgrade():
     sa.Column('type', sa.String(length=50), nullable=False),
     sa.Column('recipient_id', sa.Integer(), nullable=True),
     sa.Column('message', sa.String(length=255), nullable=True),
+    sa.Column('date', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

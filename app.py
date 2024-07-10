@@ -67,8 +67,13 @@ def logout():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    return render_template('dashboard.html', balance=current_user.balance)
+
+@app.route('/transactions')
+@login_required
+def transactions():
     transactions = Transaction.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', transactions=transactions, balance=current_user.balance)
+    return render_template('transactions.html', transactions=transactions)
 
 @app.route('/deposit', methods=['POST'])
 @login_required
