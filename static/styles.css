@@ -23,7 +23,7 @@ nav a {
     margin: 0 auto;
 }
 
-.form-container {
+.form-container, .dashboard-container, .transaction-container {
     background: white;
     padding: 2em;
     border-radius: 8px;
@@ -31,7 +31,7 @@ nav a {
     margin-bottom: 2em;
 }
 
-.form-container h2 {
+.form-container h2, .dashboard-container h2, .transaction-container h2 {
     margin-bottom: 1em;
     color: #343a40;
 }
@@ -85,14 +85,6 @@ li {
     color: red;
 }
 
-.dashboard-container {
-    background: white;
-    padding: 2em;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2em;
-}
-
 .transaction-forms {
     display: flex;
     flex-wrap: wrap;
@@ -110,19 +102,6 @@ li {
 }
 
 .form-section h3 {
-    margin-bottom: 1em;
-    color: #343a40;
-}
-
-.transaction-container {
-    background: white;
-    padding: 2em;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 2em;
-}
-
-.transaction-container h2 {
     margin-bottom: 1em;
     color: #343a40;
 }
